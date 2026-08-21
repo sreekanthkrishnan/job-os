@@ -3,9 +3,11 @@ from pathlib import Path
 from datetime import timedelta
 from dotenv import load_dotenv
 
-load_dotenv()
-
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables from .env (backend directory or workspace root)
+load_dotenv(BASE_DIR / '.env')
+load_dotenv(BASE_DIR.parent / '.env')
 
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-jobos-secret-key-change-in-production-2026')
 
@@ -35,6 +37,7 @@ INSTALLED_APPS = [
     'apps.interviews',
     'apps.courses',
     'apps.analytics',
+    'apps.career',
 ]
 
 MIDDLEWARE = [
@@ -68,7 +71,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'jobos_config.wsgi.application'
 
-# Database configuration: Default to SQLite for easy dev boot, postgresql if DATABASE_URL specified
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -76,27 +78,15 @@ DATABASES = {
     }
 }
 
-# Custom User Model
 AUTH_USER_MODEL = 'authentication.User'
 
-# Password validation
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-        'OPTIONS': {'min_length': 8},
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
@@ -105,7 +95,6 @@ USE_TZ = True
 STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# REST Framework Configuration
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -116,7 +105,6 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
-# SimpleJWT Configuration
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
@@ -124,9 +112,7 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-# CORS Settings
 CORS_ALLOW_ALL_ORIGINS = True
 
-# AI Provider Configuration
 AI_PROVIDER = os.getenv('AI_PROVIDER', 'gemini')
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')

@@ -8,6 +8,7 @@ import { DashboardView } from '@/features/dashboard/DashboardView';
 import { JobsView } from '@/features/jobs/JobsView';
 import { CoursesView } from '@/features/courses/CoursesView';
 import { SkillsView } from '@/features/skills/SkillsView';
+import { CareerProfileView } from '@/features/career/CareerProfileView';
 import { SettingsView } from '@/features/settings/SettingsView';
 import { Loader2 } from 'lucide-react';
 
@@ -50,6 +51,7 @@ export const App: React.FC = () => {
           ) : (
             <Route element={<AppLayout />}>
               <Route path="/" element={<DashboardView />} />
+              <Route path="/career" element={<CareerProfileView />} />
               <Route path="/jobs" element={<JobsView />} />
               <Route path="/courses" element={<CoursesView />} />
               <Route path="/skills" element={<SkillsView />} />

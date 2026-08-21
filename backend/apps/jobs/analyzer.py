@@ -69,6 +69,7 @@ def analyze_job_description(raw_text: str) -> Dict[str, Any]:
         return fallback_rule_based_analysis("")
 
     api_key = getattr(settings, 'GEMINI_API_KEY', '') or os.getenv('GEMINI_API_KEY', '')
+    print(api_key+"Client created successfully")
 
     if not api_key:
         logger.info("GEMINI_API_KEY not configured. Using rule-based fallback analyzer.")
