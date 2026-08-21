@@ -43,11 +43,11 @@ export const UpcomingInterviewsWidget: React.FC = () => {
         <div className="flex items-center justify-between border-b border-slate-800 pb-3">
           <div className="flex items-center gap-2">
             <Calendar className="w-4 h-4 text-indigo-400" />
-            <h3 className="font-semibold text-sm text-slate-200">Upcoming Interviews</h3>
+            <h3 className="font-semibold text-sm text-slate-100">Upcoming Interviews</h3>
           </div>
           <Badge variant="slate" size="sm">0 Scheduled</Badge>
         </div>
-        <p className="text-xs text-slate-500 py-2 text-center">No upcoming interviews scheduled for this week.</p>
+        <p className="text-xs text-slate-400 py-2 text-center">No upcoming interviews scheduled for this week.</p>
       </Card>
     );
   }
@@ -57,7 +57,7 @@ export const UpcomingInterviewsWidget: React.FC = () => {
       <div className="flex items-center justify-between border-b border-slate-800 pb-3">
         <div className="flex items-center gap-2">
           <Calendar className="w-4 h-4 text-indigo-400" />
-          <h3 className="font-semibold text-sm text-slate-200">Upcoming Interviews</h3>
+          <h3 className="font-semibold text-sm text-slate-100">Upcoming Interviews</h3>
         </div>
         <Badge variant="indigo" pulse size="sm">{upcoming.length} Scheduled</Badge>
       </div>
@@ -81,14 +81,14 @@ export const UpcomingInterviewsWidget: React.FC = () => {
                     {ROUND_TYPE_LABELS[iv.round_type] || iv.round_type}
                   </Badge>
                 </div>
-                <p className="text-xs text-slate-300 font-medium">{iv.job_role || 'Role'}</p>
-                <div className="flex items-center gap-2 text-[11px] text-indigo-400">
-                  <Clock className="w-3 h-3" />
+                <p className="text-xs text-slate-200 font-medium">{iv.job_role || 'Role'}</p>
+                <div className="flex items-center gap-2 text-xs text-indigo-300 font-semibold">
+                  <Clock className="w-3.5 h-3.5 text-indigo-400" />
                   <span>{dateStr} at {timeStr}</span>
                 </div>
               </div>
 
-              <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-indigo-400 transition-colors" />
+              <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-indigo-400 transition-colors" />
             </div>
           );
         })}

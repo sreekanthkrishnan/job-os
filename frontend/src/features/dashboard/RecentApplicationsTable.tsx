@@ -55,10 +55,10 @@ export const RecentApplicationsTable: React.FC<RecentApplicationsTableProps> = (
         <div className="flex items-center justify-between border-b border-slate-800 pb-3">
           <div className="flex items-center gap-2">
             <Briefcase className="w-4 h-4 text-indigo-400" />
-            <h3 className="font-semibold text-sm text-slate-200">Recent Applications</h3>
+            <h3 className="font-semibold text-sm text-slate-100">Recent Applications</h3>
           </div>
         </div>
-        <p className="text-xs text-slate-500 py-4 text-center">No recent job applications recorded yet.</p>
+        <p className="text-xs text-slate-400 py-4 text-center">No recent job applications recorded yet.</p>
       </Card>
     );
   }
@@ -68,7 +68,7 @@ export const RecentApplicationsTable: React.FC<RecentApplicationsTableProps> = (
       <div className="flex items-center justify-between border-b border-slate-800 pb-3">
         <div className="flex items-center gap-2">
           <Briefcase className="w-4 h-4 text-indigo-400" />
-          <h3 className="font-semibold text-sm text-slate-200">Recent Job Applications</h3>
+          <h3 className="font-semibold text-sm text-slate-100">Recent Job Applications</h3>
         </div>
         <Button
           variant="outline"
@@ -82,21 +82,21 @@ export const RecentApplicationsTable: React.FC<RecentApplicationsTableProps> = (
 
       <div className="overflow-x-auto">
         <table className="w-full text-left text-xs">
-          <thead className="bg-slate-900/60 text-slate-400 font-semibold uppercase tracking-wider text-[10px] border-b border-slate-800">
+          <thead className="bg-slate-900/80 text-slate-300 font-semibold uppercase tracking-wider text-[11px] border-b border-slate-800">
             <tr>
-              <th className="py-2.5 px-3">Company</th>
-              <th className="py-2.5 px-3">Role</th>
-              <th className="py-2.5 px-3">Status</th>
-              <th className="py-2.5 px-3">Match Score</th>
-              <th className="py-2.5 px-3">Applied Date</th>
-              <th className="py-2.5 px-3 text-right">Action</th>
+              <th className="py-3 px-3">Company</th>
+              <th className="py-3 px-3">Role</th>
+              <th className="py-3 px-3">Status</th>
+              <th className="py-3 px-3">Match Score</th>
+              <th className="py-3 px-3">Applied Date</th>
+              <th className="py-3 px-3 text-right">Action</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800/60 font-sans">
             {recentJobs.map((j) => (
               <tr key={j.id} className="hover:bg-slate-900/40 transition-colors">
                 <td className="py-3 px-3 font-bold text-slate-100">{j.company}</td>
-                <td className="py-3 px-3 text-slate-300 font-medium">{j.role}</td>
+                <td className="py-3 px-3 text-slate-200 font-medium">{j.role}</td>
                 <td className="py-3 px-3">
                   <Badge variant={STATUS_VARIANTS[j.status] || 'indigo'} size="sm">
                     {j.status.replace('_', ' ')}
@@ -113,7 +113,7 @@ export const RecentApplicationsTable: React.FC<RecentApplicationsTableProps> = (
                     <span className="font-bold text-indigo-400 text-[11px]">{j.match_score}%</span>
                   </div>
                 </td>
-                <td className="py-3 px-3 text-slate-400 text-[11px]">{j.applied_date}</td>
+                <td className="py-3 px-3 text-slate-300 text-[11px] font-medium">{j.applied_date}</td>
                 <td className="py-3 px-3 text-right">
                   <button
                     onClick={() => handleOpenDetail(j.id)}

@@ -100,66 +100,66 @@ export const DashboardView: React.FC = () => {
       {/* 7 Dynamic KPI Stats Cards Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
         <Card hoverEffect className="space-y-1.5 p-3.5">
-          <div className="flex items-center justify-between text-slate-400">
-            <span className="text-[10px] font-bold uppercase tracking-wider">Applied</span>
+          <div className="flex items-center justify-between text-slate-300">
+            <span className="text-[11px] font-bold uppercase tracking-wider">Applied</span>
             <Briefcase className="w-4 h-4 text-indigo-400" />
           </div>
           <div className="text-xl font-bold text-slate-100">{overview.total_applied}</div>
-          <p className="text-[10px] text-slate-500">Submitted jobs</p>
+          <p className="text-[11px] text-slate-400 font-medium">Submitted jobs</p>
         </Card>
 
         <Card hoverEffect className="space-y-1.5 p-3.5">
-          <div className="flex items-center justify-between text-slate-400">
-            <span className="text-[10px] font-bold uppercase tracking-wider">Interviews</span>
+          <div className="flex items-center justify-between text-slate-300">
+            <span className="text-[11px] font-bold uppercase tracking-wider">Interviews</span>
             <Calendar className="w-4 h-4 text-cyan-400" />
           </div>
           <div className="text-xl font-bold text-slate-100">{overview.interviews_scheduled}</div>
-          <p className="text-[10px] text-slate-500">Rounds active</p>
+          <p className="text-[11px] text-slate-400 font-medium">Rounds active</p>
         </Card>
 
         <Card hoverEffect className="space-y-1.5 p-3.5">
-          <div className="flex items-center justify-between text-slate-400">
-            <span className="text-[10px] font-bold uppercase tracking-wider">Active</span>
+          <div className="flex items-center justify-between text-slate-300">
+            <span className="text-[11px] font-bold uppercase tracking-wider">Active</span>
             <TrendingUp className="w-4 h-4 text-amber-400" />
           </div>
           <div className="text-xl font-bold text-slate-100">{overview.active_count}</div>
-          <p className="text-[10px] text-slate-500">In pipeline</p>
+          <p className="text-[11px] text-slate-400 font-medium">In pipeline</p>
         </Card>
 
         <Card hoverEffect className="space-y-1.5 p-3.5">
-          <div className="flex items-center justify-between text-slate-400">
-            <span className="text-[10px] font-bold uppercase tracking-wider">Offers</span>
+          <div className="flex items-center justify-between text-slate-300">
+            <span className="text-[11px] font-bold uppercase tracking-wider">Offers</span>
             <Award className="w-4 h-4 text-emerald-400" />
           </div>
           <div className="text-xl font-bold text-emerald-400">{overview.offers_count}</div>
-          <p className="text-[10px] text-slate-500">Secured offers</p>
+          <p className="text-[11px] text-slate-400 font-medium">Secured offers</p>
         </Card>
 
         <Card hoverEffect className="space-y-1.5 p-3.5">
-          <div className="flex items-center justify-between text-slate-400">
-            <span className="text-[10px] font-bold uppercase tracking-wider">Rejected</span>
+          <div className="flex items-center justify-between text-slate-300">
+            <span className="text-[11px] font-bold uppercase tracking-wider">Rejected</span>
             <XCircle className="w-4 h-4 text-rose-400" />
           </div>
           <div className="text-xl font-bold text-slate-100">{overview.rejected_count}</div>
-          <p className="text-[10px] text-slate-500">Closed outcomes</p>
+          <p className="text-[11px] text-slate-400 font-medium">Closed outcomes</p>
         </Card>
 
         <Card hoverEffect className="space-y-1.5 p-3.5">
-          <div className="flex items-center justify-between text-slate-400">
-            <span className="text-[10px] font-bold uppercase tracking-wider">Response %</span>
+          <div className="flex items-center justify-between text-slate-300">
+            <span className="text-[11px] font-bold uppercase tracking-wider">Response %</span>
             <Percent className="w-4 h-4 text-purple-400" />
           </div>
           <div className="text-xl font-bold text-purple-400">{overview.response_rate}%</div>
-          <p className="text-[10px] text-slate-500">Outreach response</p>
+          <p className="text-[11px] text-slate-400 font-medium">Outreach response</p>
         </Card>
 
         <Card hoverEffect className="space-y-1.5 p-3.5">
-          <div className="flex items-center justify-between text-slate-400">
-            <span className="text-[10px] font-bold uppercase tracking-wider">Conversion</span>
+          <div className="flex items-center justify-between text-slate-300">
+            <span className="text-[11px] font-bold uppercase tracking-wider">Conversion</span>
             <CheckCircle2 className="w-4 h-4 text-cyan-400" />
           </div>
           <div className="text-xl font-bold text-cyan-400">{overview.conversion_rate}%</div>
-          <p className="text-[10px] text-slate-500">Offer conversion</p>
+          <p className="text-[11px] text-slate-400 font-medium">Offer conversion</p>
         </Card>
       </div>
 
