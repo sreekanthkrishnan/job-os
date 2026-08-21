@@ -69,11 +69,16 @@ def analyze_job_description(raw_text: str) -> Dict[str, Any]:
         return fallback_rule_based_analysis("")
 
     api_key = getattr(settings, 'GEMINI_API_KEY', '') or os.getenv('GEMINI_API_KEY', '')
-    print(api_key+"Client created successfully")
+    if not api_key:
+        from dotenv import load_dotenv
+        load_dotenv(settings.BASE_DIR / '.env', override=True)
+        load_dotenv(settings.BASE_DIR.parent / '.env', override=True)
+        api_key = os.getenv('GEMINI_API_KEY', '')
 
     if not api_key:
         logger.info("GEMINI_API_KEY not configured. Using rule-based fallback analyzer.")
         return fallback_rule_based_analysis(raw_text)
+
 
     try:
         from google import genai
@@ -101,9 +106,10 @@ Return ONLY valid JSON without markdown formatting or code blocks.
 """
 
         response = client.models.generate_content(
-            model='gemini-2.5-flash',
+            model='gemini-3.6-flash',
             contents=prompt
         )
+
 
         text_content = response.text.strip()
         # Clean potential markdown fences
