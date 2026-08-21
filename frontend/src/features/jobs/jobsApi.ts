@@ -13,6 +13,7 @@ export interface CreateJobPayload {
   status: JobStatus;
   job_url?: string;
   raw_description?: string;
+  applied_resume?: string | null;
   skills?: string[];
 }
 

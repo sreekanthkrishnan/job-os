@@ -61,6 +61,17 @@ export const api = {
     return handleResponse<T>(response);
   },
 
+  async postForm<T>(url: string, formData: FormData): Promise<ApiResponse<T>> {
+    const response = await fetch(`${API_BASE_URL}${url}`, {
+      method: 'POST',
+      headers: {
+        ...getAuthHeaders(),
+      },
+      body: formData,
+    });
+    return handleResponse<T>(response);
+  },
+
   async patch<T>(url: string, data?: any): Promise<ApiResponse<T>> {
     const response = await fetch(`${API_BASE_URL}${url}`, {
       method: 'PATCH',

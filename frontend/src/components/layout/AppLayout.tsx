@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { Navbar } from './Navbar';
-import { X, Sparkles, LayoutDashboard, Briefcase, GraduationCap, Award, Settings } from 'lucide-react';
+import { X, Sparkles, LayoutDashboard, Briefcase, FileText, GraduationCap, Award, Settings } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
 export const AppLayout: React.FC = () => {
@@ -11,6 +11,7 @@ export const AppLayout: React.FC = () => {
   const navItems = [
     { name: 'Dashboard', path: '/', icon: LayoutDashboard },
     { name: 'Jobs Applied', path: '/jobs', icon: Briefcase },
+    { name: 'Resumes', path: '/resumes', icon: FileText },
     { name: 'Courses & Notes', path: '/courses', icon: GraduationCap },
     { name: 'Skills Catalog', path: '/skills', icon: Award },
     { name: 'Settings', path: '/settings', icon: Settings },

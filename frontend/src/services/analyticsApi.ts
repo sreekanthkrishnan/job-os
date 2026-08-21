@@ -30,6 +30,26 @@ export interface AnalyticsOverviewData {
     interviewer?: string;
     result: string;
   }>;
+  resumes_performance?: Array<{
+    id: string;
+    name: string;
+    target_role?: string;
+    version: number;
+    applications_count: number;
+    responses_count: number;
+    interviews_count: number;
+    offers_count: number;
+    response_rate: number;
+    interview_rate: number;
+  }>;
+  best_performing_resume?: {
+    id: string;
+    name: string;
+    response_rate: number;
+    interview_rate: number;
+    applications_count: number;
+  } | null;
+  top_resume_improvement_opportunity?: string;
 }
 
 export const analyticsApi = {

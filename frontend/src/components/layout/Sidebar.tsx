@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Target, Briefcase, GraduationCap, Award, Settings, LogOut, Sparkles } from 'lucide-react';
+import { LayoutDashboard, Target, Briefcase, FileText, GraduationCap, Award, Settings, LogOut, Sparkles } from 'lucide-react';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { clsx } from 'clsx';
 
@@ -11,6 +11,7 @@ export const Sidebar: React.FC = () => {
     { name: 'Dashboard', path: '/', icon: LayoutDashboard },
     { name: 'Career Profile', path: '/career', icon: Target },
     { name: 'Jobs Applied', path: '/jobs', icon: Briefcase },
+    { name: 'Resumes', path: '/resumes', icon: FileText },
     { name: 'Courses & Notes', path: '/courses', icon: GraduationCap },
     { name: 'Skills Catalog', path: '/skills', icon: Award },
     { name: 'Settings', path: '/settings', icon: Settings },

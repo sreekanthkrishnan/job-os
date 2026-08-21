@@ -19,6 +19,7 @@ class JobSerializer(serializers.ModelSerializer):
     )
     matching_skills = serializers.SerializerMethodField()
     missing_skills = serializers.SerializerMethodField()
+    applied_resume_name = serializers.CharField(source='applied_resume.name', read_only=True, allow_null=True)
 
     class Meta:
         model = Job
@@ -26,7 +27,8 @@ class JobSerializer(serializers.ModelSerializer):
             'id', 'company', 'role', 'location', 'work_mode',
             'employment_type', 'experience_required', 'salary',
             'applied_date', 'status', 'job_url', 'raw_description',
-            'match_score', 'job_skills', 'skills', 'matching_skills',
+            'match_score', 'applied_resume', 'applied_resume_name',
+            'job_skills', 'skills', 'matching_skills',
             'missing_skills', 'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'match_score', 'created_at', 'updated_at']

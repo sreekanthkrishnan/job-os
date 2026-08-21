@@ -64,6 +64,13 @@ class Job(models.Model):
         default=0.00,
         db_index=True
     )
+    applied_resume = models.ForeignKey(
+        'resumes.Resume',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='applied_jobs'
+    )
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
 

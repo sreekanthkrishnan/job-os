@@ -11,7 +11,7 @@ import { RecentApplicationsTable } from './RecentApplicationsTable';
 import { UpcomingInterviewsWidget } from '@/features/interviews/UpcomingInterviewsWidget';
 import {
   Briefcase, Calendar, CheckCircle2, Sparkles, TrendingUp,
-  XCircle, Percent, Award, Plus
+  XCircle, Percent, Award, Plus, FileText
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -174,6 +174,37 @@ export const DashboardView: React.FC = () => {
         <SkillGapHeatmapWidget topMissingSkills={overview.top_missing_skills} />
         <UpcomingInterviewsWidget />
       </div>
+
+      {/* Resume Performance & AI Insight Card */}
+      {overview.best_performing_resume && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card hoverEffect className="p-4 bg-gradient-to-tr from-indigo-950/40 via-slate-900 to-purple-950/20 border-indigo-500/30 space-y-2">
+            <div className="flex items-center justify-between text-slate-400">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-400">🏆 Top Performing Resume</span>
+              <FileText className="w-4 h-4 text-indigo-400" />
+            </div>
+            <p className="text-base font-bold text-slate-100 truncate">{overview.best_performing_resume.name}</p>
+            <div className="flex items-center gap-3 text-xs pt-1">
+              <span className="text-emerald-400 font-semibold">{overview.best_performing_resume.response_rate}% Response</span>
+              <span className="text-cyan-400 font-semibold">{overview.best_performing_resume.interview_rate}% Interview</span>
+            </div>
+          </Card>
+
+          <Card hoverEffect className="md:col-span-2 p-4 bg-slate-900/60 border-slate-800 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5" /> Top Resume Improvement Opportunity
+              </span>
+              <Button size="sm" variant="outline" onClick={() => navigate('/resumes')}>
+                Manage Resumes
+              </Button>
+            </div>
+            <p className="text-xs text-slate-300 leading-relaxed font-sans pt-1">
+              {overview.top_resume_improvement_opportunity || "Regularly update target role resumes with verified skill proficiencies to boost call probability estimates."}
+            </p>
+          </Card>
+        </div>
+      )}
 
       {/* Recent Applications Table */}
       <RecentApplicationsTable recentJobs={overview.recent_jobs} />

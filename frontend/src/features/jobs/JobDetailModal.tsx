@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Job } from '@/types';
 import { Modal } from '@/components/ui/Modal';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { InterviewTimeline } from '@/features/interviews/InterviewTimeline';
-import { Building2, MapPin, Calendar, ExternalLink, CheckCircle2, XCircle, DollarSign, Award } from 'lucide-react';
+import { ResumeJobAnalysisTab } from '@/features/resume-intelligence/ResumeJobAnalysisTab';
+import { Building2, MapPin, Calendar, ExternalLink, CheckCircle2, XCircle, DollarSign, Award, Sparkles, FileText } from 'lucide-react';
 
 interface JobDetailModalProps {
   job: Job | null;
@@ -19,6 +20,8 @@ export const JobDetailModal: React.FC<JobDetailModalProps> = ({
   onClose,
   onEdit,
 }) => {
+  const [activeTab, setActiveTab] = useState<'overview' | 'resume_intelligence'>('overview');
+
   if (!job) return null;
 
   const matchScore = typeof job.match_score === 'string' ? parseFloat(job.match_score) : job.match_score;
@@ -32,6 +35,11 @@ export const JobDetailModal: React.FC<JobDetailModalProps> = ({
             <div className="flex items-center gap-2">
               <Building2 className="w-4 h-4 text-indigo-400" />
               <h2 className="text-lg font-bold text-slate-100">{job.company}</h2>
+              {job.applied_resume_name && (
+                <Badge variant="indigo" size="sm">
+                  <FileText className="w-3 h-3 mr-1" /> {job.applied_resume_name}
+                </Badge>
+              )}
             </div>
             <div className="flex flex-wrap items-center gap-3 text-xs text-slate-400">
               {job.location && (
@@ -68,79 +76,114 @@ export const JobDetailModal: React.FC<JobDetailModalProps> = ({
           </div>
         </div>
 
-        {/* Match Score Banner */}
-        <div className="p-4 rounded-xl bg-gradient-to-r from-indigo-950/60 via-purple-950/40 to-slate-900 border border-indigo-500/30 space-y-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Award className="w-5 h-5 text-indigo-400" />
-              <span className="text-sm font-semibold text-slate-200">Skills Match Score</span>
-            </div>
-            <span className="text-xl font-bold text-indigo-400">{matchScore}%</span>
-          </div>
-
-          {/* Progress Bar */}
-          <div className="w-full h-2.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
-            <div
-              className="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-400 transition-all duration-500"
-              style={{ width: `${Math.min(100, Math.max(0, matchScore))}%` }}
-            />
-          </div>
+        {/* Tab Navigation */}
+        <div className="flex items-center gap-2 border-b border-slate-800 pb-2">
+          <button
+            onClick={() => setActiveTab('overview')}
+            className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
+              activeTab === 'overview'
+                ? 'bg-indigo-600/20 text-indigo-400 border border-indigo-500/30'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+            }`}
+          >
+            Overview & Skills
+          </button>
+          <button
+            onClick={() => setActiveTab('resume_intelligence')}
+            className={`px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
+              activeTab === 'resume_intelligence'
+                ? 'bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 font-bold'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+            <span>Resume Intelligence & Copilot</span>
+          </button>
         </div>
 
-        {/* Skills Breakdown Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Matching Skills */}
-          <div className="p-4 rounded-xl bg-emerald-950/20 border border-emerald-500/20 space-y-2">
-            <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold uppercase tracking-wider">
-              <CheckCircle2 className="w-4 h-4" />
-              <span>Matching Skills ({job.matching_skills?.length || 0})</span>
-            </div>
-            <div className="flex flex-wrap gap-1.5 pt-1">
-              {job.matching_skills && job.matching_skills.length > 0 ? (
-                job.matching_skills.map((skill) => (
-                  <Badge key={skill} variant="emerald" size="sm" className="normal-case">
-                    ✓ {skill}
-                  </Badge>
-                ))
-              ) : (
-                <span className="text-xs text-slate-500 italic">No skills currently matching profile</span>
-              )}
-            </div>
-          </div>
+        {/* Tab 1: Overview */}
+        {activeTab === 'overview' && (
+          <div className="space-y-6">
+            {/* Match Score Banner */}
+            <div className="p-4 rounded-xl bg-gradient-to-r from-indigo-950/60 via-purple-950/40 to-slate-900 border border-indigo-500/30 space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Award className="w-5 h-5 text-indigo-400" />
+                  <span className="text-sm font-semibold text-slate-200">Skills Match Score</span>
+                </div>
+                <span className="text-xl font-bold text-indigo-400">{matchScore}%</span>
+              </div>
 
-          {/* Missing Skills */}
-          <div className="p-4 rounded-xl bg-rose-950/20 border border-rose-500/20 space-y-2">
-            <div className="flex items-center gap-2 text-rose-400 text-xs font-bold uppercase tracking-wider">
-              <XCircle className="w-4 h-4" />
-              <span>Missing Skills ({job.missing_skills?.length || 0})</span>
+              {/* Progress Bar */}
+              <div className="w-full h-2.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+                <div
+                  className="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-400 transition-all duration-500"
+                  style={{ width: `${Math.min(100, Math.max(0, matchScore))}%` }}
+                />
+              </div>
             </div>
-            <div className="flex flex-wrap gap-1.5 pt-1">
-              {job.missing_skills && job.missing_skills.length > 0 ? (
-                job.missing_skills.map((skill) => (
-                  <Badge key={skill} variant="rose" size="sm" className="normal-case">
-                    ✕ {skill}
-                  </Badge>
-                ))
-              ) : (
-                <span className="text-xs text-emerald-400 font-medium">100% skill match! Zero missing skills.</span>
-              )}
-            </div>
-          </div>
-        </div>
 
-        {/* Interview Timeline Module */}
-        <div className="pt-2 border-t border-slate-800">
-          <InterviewTimeline jobId={job.id} />
-        </div>
+            {/* Skills Breakdown Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Matching Skills */}
+              <div className="p-4 rounded-xl bg-emerald-950/20 border border-emerald-500/20 space-y-2">
+                <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold uppercase tracking-wider">
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>Matching Skills ({job.matching_skills?.length || 0})</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {job.matching_skills && job.matching_skills.length > 0 ? (
+                    job.matching_skills.map((skill) => (
+                      <Badge key={skill} variant="emerald" size="sm" className="normal-case">
+                        ✓ {skill}
+                      </Badge>
+                    ))
+                  ) : (
+                    <span className="text-xs text-slate-500 italic">No skills currently matching profile</span>
+                  )}
+                </div>
+              </div>
 
-        {/* Job Description Text */}
-        {job.raw_description && (
-          <div className="space-y-2 pt-2 border-t border-slate-800">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Job Description Notes</h4>
-            <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-300 leading-relaxed whitespace-pre-wrap font-sans max-h-48 overflow-y-auto">
-              {job.raw_description}
+              {/* Missing Skills */}
+              <div className="p-4 rounded-xl bg-rose-950/20 border border-rose-500/20 space-y-2">
+                <div className="flex items-center gap-2 text-rose-400 text-xs font-bold uppercase tracking-wider">
+                  <XCircle className="w-4 h-4" />
+                  <span>Missing Skills ({job.missing_skills?.length || 0})</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {job.missing_skills && job.missing_skills.length > 0 ? (
+                    job.missing_skills.map((skill) => (
+                      <Badge key={skill} variant="rose" size="sm" className="normal-case">
+                        ✕ {skill}
+                      </Badge>
+                    ))
+                  ) : (
+                    <span className="text-xs text-emerald-400 font-medium">100% skill match! Zero missing skills.</span>
+                  )}
+                </div>
+              </div>
             </div>
+
+            {/* Interview Timeline Module */}
+            <div className="pt-2 border-t border-slate-800">
+              <InterviewTimeline jobId={job.id} />
+            </div>
+
+            {/* Job Description Text */}
+            {job.raw_description && (
+              <div className="space-y-2 pt-2 border-t border-slate-800">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Job Description Notes</h4>
+                <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-300 leading-relaxed whitespace-pre-wrap font-sans max-h-48 overflow-y-auto">
+                  {job.raw_description}
+                </div>
+              </div>
+            )}
           </div>
+        )}
+
+        {/* Tab 2: Resume Intelligence */}
+        {activeTab === 'resume_intelligence' && (
+          <ResumeJobAnalysisTab job={job} />
         )}
 
         <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">

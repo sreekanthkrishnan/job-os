@@ -65,12 +65,137 @@ export interface Job {
   job_url?: string;
   raw_description?: string;
   match_score: number | string;
+  applied_resume?: string | null;
+  applied_resume_name?: string | null;
   job_skills?: JobSkillItem[];
   required_skills?: string[];
   matching_skills?: string[];
   missing_skills?: string[];
   created_at: string;
   updated_at: string;
+}
+
+export interface ResumeSkill {
+  id: string;
+  name: string;
+  category: string;
+  experience_years?: number | null;
+}
+
+export interface ResumeParsedProfile {
+  candidate_name?: string;
+  current_role?: string;
+  years_of_experience?: number;
+  seniority_level?: string;
+  professional_summary?: string;
+  companies?: string[];
+  experience?: Array<{
+    company?: string;
+    role?: string;
+    duration?: string;
+    responsibilities?: string[];
+    achievements?: string[];
+  }>;
+  skills?: string[];
+  skill_categories?: Record<string, string[]>;
+  education?: Array<{ degree?: string; institution?: string; year?: string }>;
+  certifications?: string[];
+  projects?: Array<{ name?: string; description?: string; technologies?: string[] }>;
+  quantifiable_achievements?: string[];
+  keywords?: string[];
+}
+
+export interface Resume {
+  id: string;
+  name: string;
+  file: string;
+  file_url?: string;
+  file_type: string;
+  file_size: number;
+  target_role?: string;
+  description?: string;
+  version: number;
+  is_active: boolean;
+  parsed_status: 'pending' | 'completed' | 'failed';
+  analysis_status: 'pending' | 'completed' | 'failed';
+  raw_text?: string;
+  parsed_data?: ResumeParsedProfile;
+  resume_skills?: ResumeSkill[];
+  versions_count?: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ResumeJobAnalysis {
+  id: string;
+  resume: string;
+  resume_name: string;
+  resume_version: number;
+  job: string;
+  suitability_score: number | string;
+  skill_match_score: number | string;
+  experience_match_score: number | string;
+  role_match_score: number | string;
+  seniority_match_score: number | string;
+  keyword_score: number | string;
+  domain_score: number | string;
+  ats_score: number | string;
+  ai_call_probability_estimate: number;
+  ai_confidence: 'Low' | 'Medium' | 'High';
+  matching_skills: string[];
+  missing_skills: string[];
+  strengths: string[];
+  weaknesses: string[];
+  evidence: string[];
+  analysis_json?: {
+    risks?: string[];
+    why_reasoning?: string[];
+  };
+  is_recommended: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ResumeOptimization {
+  id: string;
+  resume: string;
+  job: string;
+  current_score: number | string;
+  potential_score: number | string;
+  potential_improvement: number | string;
+  missing_keywords: string[];
+  weak_sections: string[];
+  suggested_improvements: string[];
+  ats_formatting_concerns: string[];
+  created_at: string;
+}
+
+export interface OutreachMessage {
+  id: string;
+  job: string;
+  resume?: string;
+  channel: 'email' | 'linkedin';
+  tone: 'professional' | 'concise' | 'confident' | 'friendly' | 'technical';
+  recipient_name?: string;
+  recipient_role?: string;
+  subject_lines: string[];
+  selected_subject?: string;
+  body: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ResumePerformanceStat {
+  id: string;
+  name: string;
+  target_role?: string;
+  version: number;
+  applications_count: number;
+  responses_count: number;
+  interviews_count: number;
+  offers_count: number;
+  response_rate: number;
+  interview_rate: number;
 }
 
 export interface Course {
@@ -127,6 +252,15 @@ export interface DashboardStats {
   status_funnel: Array<{ status: string; count: number }>;
   recent_jobs: Job[];
   upcoming_interviews: Interview[];
+  resumes_performance?: ResumePerformanceStat[];
+  best_performing_resume?: {
+    id: string;
+    name: string;
+    response_rate: number;
+    interview_rate: number;
+    applications_count: number;
+  } | null;
+  top_resume_improvement_opportunity?: string;
 }
 
 export interface ApiResponse<T> {

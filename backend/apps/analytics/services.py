@@ -99,6 +99,48 @@ def get_user_analytics_overview(user):
             "result": iv.result
         })
 
+    # Resume Performance Analytics
+    from apps.resumes.models import Resume
+    user_resumes = Resume.objects.filter(user=user)
+    resumes_perf = []
+    best_resume = None
+    best_rate = -1.0
+
+    for res in user_resumes:
+        res_jobs = user_jobs.filter(applied_resume=res)
+        res_total = res_jobs.count()
+        res_interviews = res_jobs.filter(status__in=interview_statuses).count()
+        res_offers = res_jobs.filter(status__in=offer_statuses).count()
+        res_rejected = res_jobs.filter(status=JobStatus.REJECTED).count()
+        res_responses = res_interviews + res_offers + res_rejected
+        res_resp_rate = round((res_responses / res_total * 100), 1) if res_total > 0 else 0.0
+        res_int_rate = round((res_interviews / res_total * 100), 1) if res_total > 0 else 0.0
+
+        if res_resp_rate > best_rate and res_total > 0:
+            best_rate = res_resp_rate
+            best_resume = {
+                "id": str(res.id),
+                "name": res.name,
+                "response_rate": res_resp_rate,
+                "interview_rate": res_int_rate,
+                "applications_count": res_total
+            }
+
+        resumes_perf.append({
+            "id": str(res.id),
+            "name": res.name,
+            "target_role": res.target_role,
+            "version": res.version,
+            "applications_count": res_total,
+            "responses_count": res_responses,
+            "interviews_count": res_interviews,
+            "offers_count": res_offers,
+            "response_rate": res_resp_rate,
+            "interview_rate": res_int_rate
+        })
+
+    top_opportunity = f"{top_missing_skills[0]['skill_name']} experience is frequently required but missing in target jobs." if top_missing_skills else "Maintain profile skills and update resume periodically."
+
     return {
         "total_jobs": total_jobs,
         "total_applied": total_applied,
@@ -112,5 +154,8 @@ def get_user_analytics_overview(user):
         "status_funnel": status_funnel,
         "top_missing_skills": top_missing_skills,
         "recent_jobs": recent_jobs,
-        "upcoming_interviews": upcoming_interviews
+        "upcoming_interviews": upcoming_interviews,
+        "resumes_performance": resumes_perf,
+        "best_performing_resume": best_resume,
+        "top_resume_improvement_opportunity": top_opportunity
     }
