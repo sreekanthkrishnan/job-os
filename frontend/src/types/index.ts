@@ -224,6 +224,106 @@ export interface CourseNote {
   updated_at: string;
 }
 
+export type RoadmapStatus = 'active' | 'completed' | 'paused' | 'archived';
+export type TopicDifficulty = 'beginner' | 'intermediate' | 'advanced';
+export type TopicStatus = 'not_started' | 'in_progress' | 'completed' | 'skipped';
+export type ResourceType = 'course' | 'tutorial' | 'documentation' | 'video' | 'book' | 'project' | 'article' | 'certification';
+
+export interface LearningResource {
+  id: string;
+  topic?: string;
+  course?: string;
+  title: string;
+  provider?: string;
+  url: string;
+  resource_type: ResourceType;
+  difficulty?: string;
+  duration?: string;
+  is_free: boolean;
+  rating?: number;
+  why_recommended?: string;
+  relevance_score?: number;
+  matches?: string[];
+  status: TopicStatus;
+  progress: number;
+  notes?: string;
+  added_to_my_courses: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface RoadmapTopic {
+  id: string;
+  roadmap: string;
+  module?: string;
+  title: string;
+  description?: string;
+  order: number;
+  difficulty: TopicDifficulty;
+  estimated_hours: number;
+  prerequisites: string[];
+  learning_objectives: string[];
+  target_skills: string[];
+  status: TopicStatus;
+  progress: number;
+  notes?: string;
+  resources?: LearningResource[];
+  resources_count?: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface RoadmapModule {
+  id: string;
+  roadmap: string;
+  title: string;
+  description?: string;
+  order: number;
+  topics: RoadmapTopic[];
+  created_at: string;
+}
+
+export interface LearningRoadmap {
+  id: string;
+  title: string;
+  description?: string;
+  goal: string;
+  reason?: string;
+  current_level: string;
+  target_level: string;
+  target_role?: string;
+  estimated_duration_weeks: number;
+  weekly_hours: number;
+  overall_progress: number;
+  status: RoadmapStatus;
+  source_job?: string | null;
+  modules: RoadmapModule[];
+  topics: RoadmapTopic[];
+  completed_topics_count?: number;
+  total_topics_count?: number;
+  total_estimated_hours?: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface RoadmapDashboardStats {
+  total_courses: number;
+  active_roadmaps_count: number;
+  courses_in_progress: number;
+  skills_in_progress: number;
+  completed_courses: number;
+  active_roadmap?: LearningRoadmap | null;
+  ai_insights: string[];
+}
+
+export interface NextTopicRecommendation {
+  topic_id?: string | null;
+  title: string;
+  why: string;
+  estimated_hours: number;
+}
+
+
 export interface Interview {
   id: string;
   job: string;

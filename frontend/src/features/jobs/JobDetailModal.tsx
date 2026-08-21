@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Job } from '@/types';
 import { Modal } from '@/components/ui/Modal';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { InterviewTimeline } from '@/features/interviews/InterviewTimeline';
 import { ResumeJobAnalysisTab } from '@/features/resume-intelligence/ResumeJobAnalysisTab';
+import { roadmapsApi } from '@/features/roadmaps/roadmapsApi';
 import { Building2, MapPin, Calendar, ExternalLink, CheckCircle2, XCircle, DollarSign, Award, Sparkles, FileText } from 'lucide-react';
 
 interface JobDetailModalProps {
@@ -20,11 +22,26 @@ export const JobDetailModal: React.FC<JobDetailModalProps> = ({
   onClose,
   onEdit,
 }) => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'overview' | 'resume_intelligence'>('overview');
+  const [isBuildingRoadmap, setIsBuildingRoadmap] = useState(false);
 
   if (!job) return null;
 
   const matchScore = typeof job.match_score === 'string' ? parseFloat(job.match_score) : job.match_score;
+
+  const handleBuildJobRoadmap = async () => {
+    try {
+      setIsBuildingRoadmap(true);
+      await roadmapsApi.generateFromJob(job.id);
+      onClose();
+      navigate('/courses');
+    } catch {
+      // Error
+    } finally {
+      setIsBuildingRoadmap(false);
+    }
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={`${job.role} @ ${job.company}`} maxWidth="2xl">
@@ -145,10 +162,23 @@ export const JobDetailModal: React.FC<JobDetailModalProps> = ({
               </div>
 
               {/* Missing Skills */}
-              <div className="p-4 rounded-xl bg-rose-950/20 border border-rose-500/20 space-y-2">
-                <div className="flex items-center gap-2 text-rose-400 text-xs font-bold uppercase tracking-wider">
-                  <XCircle className="w-4 h-4" />
-                  <span>Missing Skills ({job.missing_skills?.length || 0})</span>
+              <div className="p-4 rounded-xl bg-rose-950/20 border border-rose-500/20 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-rose-400 text-xs font-bold uppercase tracking-wider">
+                    <XCircle className="w-4 h-4" />
+                    <span>Missing Skills ({job.missing_skills?.length || 0})</span>
+                  </div>
+                  {job.missing_skills && job.missing_skills.length > 0 && (
+                    <Button
+                      variant="gradient"
+                      size="sm"
+                      isLoading={isBuildingRoadmap}
+                      onClick={handleBuildJobRoadmap}
+                      leftIcon={<Sparkles className="w-3.5 h-3.5 text-amber-300" />}
+                    >
+                      Build Learning Roadmap
+                    </Button>
+                  )}
                 </div>
                 <div className="flex flex-wrap gap-1.5 pt-1">
                   {job.missing_skills && job.missing_skills.length > 0 ? (

@@ -9,6 +9,7 @@ import { StatusFunnelChart } from './StatusFunnelChart';
 import { SkillGapHeatmapWidget } from './SkillGapHeatmapWidget';
 import { RecentApplicationsTable } from './RecentApplicationsTable';
 import { UpcomingInterviewsWidget } from '@/features/interviews/UpcomingInterviewsWidget';
+import { DashboardLearningWidget } from './DashboardLearningWidget';
 import {
   Briefcase, Calendar, CheckCircle2, Sparkles, TrendingUp,
   XCircle, Percent, Award, Plus, FileText
@@ -174,6 +175,9 @@ export const DashboardView: React.FC = () => {
         <SkillGapHeatmapWidget topMissingSkills={overview.top_missing_skills} />
         <UpcomingInterviewsWidget />
       </div>
+
+      {/* AI Learning Progress Widget */}
+      <DashboardLearningWidget />
 
       {/* Resume Performance & AI Insight Card */}
       {overview.best_performing_resume && (
